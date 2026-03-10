@@ -1,0 +1,1 @@
+./dycolor-theme-manager --start
