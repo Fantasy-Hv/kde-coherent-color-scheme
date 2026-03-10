@@ -3,7 +3,7 @@ project(dy_config_loader)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(dy_config_loader lib/main.cpp
+add_executable(color-config-injector lib/main.cpp
         lib/ColorReader.cpp
         lib/ColorReader.h
         lib/ConfigLoader.cpp

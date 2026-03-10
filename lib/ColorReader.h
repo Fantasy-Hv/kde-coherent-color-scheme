@@ -9,7 +9,6 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
-#include <cmath>
 #include "Logger.h"
 using namespace std;
 struct RGB {
@@ -113,7 +112,6 @@ private:
 
            try {
                // Remove '#' prefix if present and convert hex to int
-               Logger::stdout_line(line_content);
                size_t start_pos = (line_content[0] == '#') ? 1 : 0;
                colors[current_line] = stoi(line_content.substr(start_pos), nullptr, 16);
            } catch (...) {

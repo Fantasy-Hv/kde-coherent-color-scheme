@@ -73,7 +73,7 @@ class ConfigLoader {
         return config_color_value;
     }
     void write_config(const map<string, map<string, string>>& config_set) {
-        Logger::stdout_line("writing config");
+        // Logger::stdout_line("writing config");
         ofstream target_writer(target_file_path,ios_base::trunc);
         if (target_writer.is_open()) {
             for (const auto &section : config_set) {
@@ -93,9 +93,9 @@ class ConfigLoader {
     void override() {
         map<string,map<string,string>> my_config = parse_config(source_file_path);
         map<string,map<string,string>> target_config = parse_config(target_file_path);
-        cout  << "read my_config: " << endl;
+        // cout  << "read my_config: " << endl;
         Logger::printMap(my_config);
-        cout << "read target_config: " << endl;
+        // cout << "read target_config: " << endl;
             Logger::printMap(target_config);
         for (auto &section : my_config) {
             //section

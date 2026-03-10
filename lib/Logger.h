@@ -8,7 +8,6 @@
 #include <map>
 #include <string>
 using namespace std;
-// std::string log_file_path = "~/.cache/color-scheme-updator.log";
 
 class Logger {
 public:

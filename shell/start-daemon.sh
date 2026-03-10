@@ -1,1 +1,1 @@
-./dycolor-theme-manager --start
+./dycolor-theme-manager.sh --start

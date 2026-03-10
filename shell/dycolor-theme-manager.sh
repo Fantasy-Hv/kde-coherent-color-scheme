@@ -170,7 +170,7 @@ run_pywal() {
 
 # 更新.colors文件
 update_colors_file() {
-   PROGRAM_NAME="dy_config_loader"
+   PROGRAM_NAME="color-config-injector"
    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
    UPDATE_PROGRAM="$SCRIPT_DIR/$PROGRAM_NAME"
    COLOR_CONFIG_FILE="$SCRIPT_DIR/color-config.txt"
