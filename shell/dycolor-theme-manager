@@ -9,7 +9,7 @@ CONFIG_FILE="${SCRIPT_DIR}/dycolor-config.ini"
 LOG_FILE="${SCRIPT_DIR}/dycolor.log"
 PID_FILE="${SCRIPT_DIR}/dycolor.pid"
 POLL_INTERVAL_SECONDS=1800  # 默认30分钟
-
+KDE-COLOR-TAG=1
 # 颜色输出
 RED='\033[0;31m'
 GREEN='\033[0;32m'

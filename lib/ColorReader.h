@@ -143,7 +143,7 @@ public:
 
     // Get color from colors file by line number
    int get_color(int line) {
-        Logger::stdout_line("reading color line"+ to_string(line));
+        // Logger::stdout_line("reading color line"+ to_string(line));
         if (!loaded)
             load_colors();
         if (line < 0 || line >= COLOR_COUNT) {

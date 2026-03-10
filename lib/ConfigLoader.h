@@ -100,14 +100,14 @@ class ConfigLoader {
         for (auto &section : my_config) {
             //section
             for (auto &item : section.second) { // key-value
-                Logger::stdout_line("processing config entry: " + section.first + " " + item.first + " " + item.second);
+                // Logger::stdout_line("processing config entry: " + section.first + " " + item.first + " " + item.second);
                 string config_value = item.second;
                 if (item.second[0] == '$') {
                     // $(index,value,saturation)
-                    Logger::stdout_line("mapping color");
+                    // Logger::stdout_line("mapping color");
                     config_value = map_expression2config_value(item.second);
                 }
-                Logger::stdout_line("setting target config [" + section.first + "]" + item.first + "=" + config_value);
+                // Logger::stdout_line("setting target config [" + section.first + "]" + item.first + "=" + config_value);
                 target_config[section.first][item.first] = config_value;
             }
         }
