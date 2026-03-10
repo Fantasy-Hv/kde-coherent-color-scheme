@@ -23,7 +23,7 @@ log() {
     local level="$1"
     local message="$2"
     local timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
-    echo -e "[${timestamp}] [${level}] ${message}" | tee -a "$LOG_FILE"
+    echo -e "[${timestamp}] [${level}] ${message}" >> "$LOG_FILE"
 }
 
 log_info() {
@@ -70,7 +70,7 @@ check_dependencies() {
     return 0
 }
 
-# 读取配置文件
+# 读取程序配置文件
 read_config() {
     if [ ! -f "$CONFIG_FILE" ]; then
         log_error "配置文件不存在: $CONFIG_FILE"
@@ -78,7 +78,7 @@ read_config() {
         return 1
     fi
 
-    # 读取第一行（.colors文件路径）
+    # 读取颜色映射文件（.colors文件路径）
     KDE_COLOR_FILE1="$(head -1 "$CONFIG_FILE" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
     KDE_COLOR_FILE2="$(sed -n '2p' "$CONFIG_FILE" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
 
@@ -113,12 +113,6 @@ read_config() {
 
 # 获取当前壁纸路径
 get_current_wallpaper() {
-#  # 方法 1: 使用 qdbus6 (推荐)
-#  qdbus6 --session org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.wallpaper 0
-#
-#  # 方法 2: 读取配置文件
-#  grep "^Image=" ~/.config/plasma-org.kde.plasma.desktop-appletsrc | head -1
-
     # 优先使用D-Bus方法获取壁纸路径
     local info=$(qdbus6 --session org.kde.plasmashell /PlasmaShell \
         org.kde.PlasmaShell.wallpaper 0 2>&1)
@@ -167,44 +161,12 @@ run_pywal() {
     fi
 
     log_info "运行pywal处理壁纸: $wallpaper_path"
-
-    # 使用-n参数避免设置终端颜色
-    if ! wal -i "$wallpaper_path" -n 2>&1 | tee -a "$LOG_FILE"; then
-        log_error "pywal执行失败"
-        return 1
-    fi
-
+    wal -i "$wallpaper_path" -n
     log_success "pywal配色生成完成"
     return 0
 }
 
-# 十六进制转RGB
-hex_to_rgb() {
-    local hex="${1#"#"}"
-    printf "%d,%d,%d" \
-        $((0x${hex:0:2})) \
-        $((0x${hex:2:2})) \
-        $((0x${hex:4:2}))
-}
 
-# 读取pywal颜色
-read_pywal_colors() {
-    local colors_file="$HOME/.cache/wal/colors"
-    if [ ! -f "$colors_file" ]; then
-        log_error "pywal颜色文件不存在: $colors_file"
-        return 1
-    fi
-
-    declare -gA PYWAL_COLORS
-    local index=1
-    while IFS= read -r line; do
-        PYWAL_COLORS["$index"]="$line"
-        ((index++))
-    done < "$colors_file"
-
-    log_info "读取pywal颜色数量: $((index-1))"
-    return 0
-}
 
 # 更新.colors文件
 update_colors_file() {
@@ -231,14 +193,14 @@ apply_color_scheme() {
     local theme_name="$(basename "$colors_file" .colors)"
 
     log_info "应用颜色主题: $theme_name"
-    log_info "应用颜色文件 $c"
+    log_info "应用颜色文件 $colors_file"
 
     if ! plasma-apply-colorscheme "$colors_file" 2>&1 | tee -a "$LOG_FILE"; then
-        log_error "应用颜色主题失败"
+#        log_error "应用颜色主题失败"
         return 1
     fi
 
-    log_success "颜色主题应用成功"
+#    log_success "颜色主题应用成功"
 
     # 发送KConfig更改通知，强制应用重新读取配置
     # if command -v qdbus6 &> /dev/null; then
@@ -396,7 +358,7 @@ process_wallpaper_change() {
     fi
 
     if [ "$wallpaper_path" = "$last_wallpaper" ]; then
-        log_info "壁纸未变化，跳过处理"
+#        log_info "壁纸未变化，跳过处理"
         return 0
     fi
 
