@@ -95,7 +95,7 @@ use this file to assign pywal colors to kde .colors fields.It's format is almost
   - 2-6,8-16 = Other colors
 - **value**: Brightness/lightness percentage (0-100)
 - **saturation**: Saturation percentage (0-100)
-
+for more details see the shell/color-config.txt
 ### Target .colors File Format
 it is merely the format kde color scheme used.
 KDE color scheme files use this format:
@@ -111,12 +111,6 @@ BackgroundNormal=33,33,33
 DecorationFocus=0,114,255  
 ```
 you  just need to copy two .colors files from ~/.local/share/color-scheme and modify the \[General] name filed and the file name, and then specify their paths in the project config file.
-## 🔧 Advanced Configuration
-
-### Theme Manager Config
-
-Create `dycolor-config.ini`:
-
 
 
 ## 💻 How It Works
