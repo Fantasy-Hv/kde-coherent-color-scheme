@@ -1,19 +1,16 @@
 # kde-coherent-color-scheme
 A script dynamically set kde color scheme  consistent with your wallpaper.
 =======
-# Dynamic Color Config Loader
 
-A powerful C++ tool for dynamic color theme management in KDE Plasma environments. Automatically generates and applies color schemes based on wallpaper colors using pywal integration.
 
 ## 🌟 Features
 
 - **🎨 Dynamic Color Mapping** - Read 16 base colors from color files and apply transformations
 - **🔧 Flexible Configuration** - INI-style configuration files with custom expression syntax
-- **🌈 HSL Color Manipulation** - Adjust brightness (Value) and saturation programmatically
-- **📝 Expression Syntax** - Use `$(index,value,saturation)` for dynamic color generation
+- **📝 Expression Syntax** - Use `$(index,value,saturation)` for dynamic color mapping
 - **🚀 Daemon Mode** - Background monitoring with automatic wallpaper change detection
 - **🔄 Pywal Integration** - Automatic color scheme generation from wallpapers
-- **💼 KDE Plasma Support** - Seamless integration with KDE color themes
+- **💼 KDE Plasma Support** - Integration with KDE color themes
 
 
 
