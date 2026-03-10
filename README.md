@@ -15,25 +15,7 @@ A powerful C++ tool for dynamic color theme management in KDE Plasma environment
 - **🔄 Pywal Integration** - Automatic color scheme generation from wallpapers
 - **💼 KDE Plasma Support** - Seamless integration with KDE color themes
 
-## 📁 Project Structure
 
-```
-dy-config-loader/
-├── lib/                          # C++ Core Library
-│   ├── main.cpp                  # Application entry point
-│   ├── ConfigLoader.h            # Configuration parser and writer
-│   ├── ColorReader.h             # Color file reader and HSL converter
-│   └── Logger.h                  # Logging utilities
-├── shell/                        # Shell Scripts
-│   ├── dycolor-theme-manager.sh  # Main theme manager script
-│   ├── start-daemon.sh           # Start daemon process
-│   ├── stop-daemon.sh            # Stop daemon process
-│   └── color-config.txt          # Color mapping configuration
-├── test/                         # Test Files
-│   ├── *.colors                  # Color theme files
-│   └── testupdator.sh            # Test scripts
-└── CMakeLists.txt                # Build configuration
-```
 
 ## 🛠️ Requirements
 
@@ -45,40 +27,8 @@ dy-config-loader/
 ### Runtime Dependencies
 - **pywal**: Color scheme generator (`sudo pacman -S pywal`)
 - **plasma-workspace**: KDE Plasma components (`sudo pacman -S plasma-workspace`)
-- **qdbus6**: D-Bus communication tool (optional, for advanced features)
 
-## 📦 Installation & Build
-
-### Clone and Build
-
-```bash
-# Navigate to project directory
-cd /home/yian/CLionProjects/dy-config-loader
-
-# Create build directory
-mkdir -p build && cd build
-
-# Configure with CMake
-cmake ..
-
-# Build the project
-cmake --build .
-```
-
-After successful build, the executable `color-config-injector` will be available in the build directory.
-
-### Install Location
-
-The built executable and shell scripts should be placed in a common directory:
-
-```bash
-# Example installation
-cp build/color-config-injector ~/bin/
-cp shell/*.sh ~/bin/
-chmod +x ~/bin/*.sh
-```
-
-## 🚀 Usage
+##  Usage
 
 ### Standalone Mode
 
@@ -119,59 +69,10 @@ Use the theme manager for automatic wallpaper-based theme switching:
 ```
 
 ## 📖 Configuration Guide
+this project needs three types of config files.
+### project config file
 
-### Source Configuration File Format
-
-The source config file uses INI format with special directives:
-
-```ini
-# Line 1: Path to pywal colors file (must start with /)
-/home/yian/.cache/wal/colors
-
-# Color mapping rules
-[Colors:Button]
-BackgroundNormal=$(13,12,65)    # Color index 13, 12% brightness, 65% saturation
-ForegroundNormal=$(7,90,10)     # Color index 7, 90% brightness, 10% saturation
-
-[Colors:View]
-BackgroundNormal=$(1,11,17)     # Dark background from pywal color 1
-```
-
-### Expression Syntax
-
-```
-$(index, value, saturation)
-```
-
-- **index**: Color index from pywal colors file (1-16)
-  - 1 = Background color (darkest)
-  - 7 = Foreground color (brightest)
-  - 2-6,8-16 = Other colors
-- **value**: Brightness/lightness percentage (0-100)
-- **saturation**: Saturation percentage (0-100)
-
-### Target .colors File Format
-
-KDE color scheme files use this format:
-
-```ini
-[ColorEffects:Disabled]
-Color=56,56,56
-ColorAmount=0
-
-[Colors:Button]
-BackgroundAlternate=64,69,82
-BackgroundNormal=RGB_VALUE
-DecorationFocus=0,114,255
-```
-
-RGB values are comma-separated: `R,G,B`
-
-## 🔧 Advanced Configuration
-
-### Theme Manager Config
-
-Create `dycolor-config.ini`:
+The project config file uses INI format with special directives:
 
 ```ini
 /path/to/target1.colors
@@ -181,17 +82,42 @@ poll_interval_seconds=1800
 ```
 
 **Configuration Options:**
-- Line 1: Primary .colors file path
-- Line 2: Secondary .colors file path (for dual-theme support)
+
+- Line 1: Primary .colors file path (required)
+- Line 2: Secondary .colors file path (required)
 - `poll_interval_seconds`: Wallpaper check interval (default: 1800s = 30min)
 
-### Dual Theme Support
+### color mapping config file 
+use this file to assign pywal colors to kde .colors fields.It's format is almost the same as that of .colors .you can use  color processing expression in syntax like "BackgroundNormal=$(index,value,saturation)",where
+- **index**: Color index from pywal colors file (1-16)
+  - 1 = Background color (darkest)
+  - 7 = Foreground color (brightest)
+  - 2-6,8-16 = Other colors
+- **value**: Brightness/lightness percentage (0-100)
+- **saturation**: Saturation percentage (0-100)
 
-The theme manager supports two .colors files and alternates between them:
-- Tag 1: First .colors file
-- Tag 2: Second .colors file
+### Target .colors File Format
+it is merely the format kde color scheme used.
+KDE color scheme files use this format:
 
-This prevents conflicts when multiple applications read the same color file.
+```ini
+[ColorEffects:Disabled]
+Color=56,56,56
+ColorAmount=0
+
+[Colors:Button]
+BackgroundAlternate=64,69,82
+BackgroundNormal=33,33,33
+DecorationFocus=0,114,255  
+```
+you  just need to copy two .colors files from ~/.local/share/color-scheme and modify the \[General] name filed and the file name, and then specify their paths in the project config file.
+## 🔧 Advanced Configuration
+
+### Theme Manager Config
+
+Create `dycolor-config.ini`:
+
+
 
 ## 💻 How It Works
 
@@ -238,20 +164,8 @@ This prevents conflicts when multiple applications read the same color file.
 └─────────────────┘
 ```
 
-## 🧪 Testing
 
-Test files are provided in the `test/` directory:
-
-```bash
-# Run test script
-cd test
-./testupdator.sh
-
-# Manual testing
-./color-config-injector test/color-config.txt test/dynamic_color.colors
-```
-
-## 📝 Examples
+## 📝 Configuration Examples
 
 ### Example 1: Simple Color Mapping
 
@@ -317,12 +231,6 @@ cmake -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build .
 ```
 
-### Code Structure
-
-- **ConfigLoader**: Parses INI files and processes color expressions
-- **ColorReader**: Reads color files and performs HSL conversions
-- **Logger**: Utility for debug output
-
 ### Adding New Features
 
 1. Add new `.cpp` and `.h` files to `lib/`
@@ -337,14 +245,7 @@ This project is provided as-is for educational and personal use.
 
 Feel free to submit issues or pull requests for improvements.
 
-## 📞 Support
 
-For questions or problems:
-1. Check the troubleshooting section
-2. Review log files
-3. Open an issue on the project repository
-
----
 
 **Made with ❤️ for KDE Plasma enthusiasts**
->>>>>>> origin/master
+
