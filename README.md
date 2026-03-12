@@ -72,7 +72,7 @@ use this file to assign pywal colors to kde .colors fields.It's format is almost
 - **saturation**: Saturation percentage (0-100)
 
 for more details see the shell/color-config.txt
-### 3.Targets .colors File Format
+### 3.Target .colors File
 it is merely the format kde color scheme used.
 KDE color scheme files use this format:
 
