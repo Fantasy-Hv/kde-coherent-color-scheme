@@ -27,24 +27,6 @@ A script dynamically set kde color scheme  consistent with your wallpaper.
 
 ##  Usage
 
-### Standalone Mode
-
-Run the config injector directly:
-
-```bash
-./color-config-injector <source_config> <target_config>
-```
-
-**Parameters:**
-- `<source_config>`: Path to source configuration file (with color mapping rules)
-- `<target_config>`: Path to target KDE color scheme file (.colors)
-
-**Example:**
-```bash
-./color-config-injector ./shell/color-config.txt ~/.local/share/color-themes/theme.colors
-```
-
-### Daemon Mode (Recommended)
 
 Use the theme manager for automatic wallpaper-based theme switching:
 
@@ -108,7 +90,7 @@ BackgroundAlternate=64,69,82
 BackgroundNormal=33,33,33
 DecorationFocus=0,114,255  
 ```
-you  just need to copy two .colors files from ~/.local/share/color-scheme and modify the \[General] name filed and the file name, and then specify their paths in the project config file.
+you  just need to copy two .colors files from ~/.local/share/color-scheme (to the same directory)and modify the \[General] name filed and the file name, and then specify their paths in the project config file.
 
 
 ## 💻 How It Works
@@ -125,7 +107,7 @@ you  just need to copy two .colors files from ~/.local/share/color-scheme and mo
 
 ```
 ┌─────────────────┐
-│ Wallpaper Change│
+│ Wallpaper Change│ --by polling or dbus siganl
 └────────┬────────┘
          │
          ▼
@@ -159,22 +141,12 @@ you  just need to copy two .colors files from ~/.local/share/color-scheme and mo
 
 ## 📝 Configuration Examples
 
-### Example 1: Simple Color Mapping
 
-Source config (`myconfig.txt`):
-```ini
-/home/yian/.cache/wal/colors
-
-[Colors:Window]
-BackgroundNormal=$(0,50,50)
-ForegroundNormal=$(15,90,10)
-```
-
-### Example 2: Complete Theme
+### Example 1: Complete Theme
 
 See `shell/color-config.txt` for a complete example with all KDE color sections.
 
-### Example 3: Custom Polling Interval
+### Example 2: Custom Polling Interval
 
 In `dycolor-config.ini`:
 ```ini
@@ -183,7 +155,7 @@ In `dycolor-config.ini`:
 poll_interval_seconds=900
 ```
 
-This checks for wallpaper changes every 15 minutes instead of the default 30.
+This checks for wallpaper changes every 15 minutes.
 
 ## 🐛 Troubleshooting
 
