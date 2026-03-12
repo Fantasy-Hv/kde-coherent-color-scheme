@@ -45,7 +45,7 @@ Use the theme manager for automatic wallpaper-based theme switching:
 
 ## 📖 Configuration Guide
 this project needs three types of config files.
-### project config file
+### 1.project config file
 
 The project config file uses INI format with special directives:
 
@@ -62,7 +62,7 @@ poll_interval_seconds=1800
 - Line 2: Secondary .colors file path (required)
 - `poll_interval_seconds`: Wallpaper check interval (default: 1800s = 30min)
 
-### color mapping config file 
+### 2.color mapping config file 
 use this file to assign pywal colors to kde .colors fields.It's format is almost the same as that of .colors .you can use  color processing expression in syntax like "BackgroundNormal=$(index,value,saturation)",where
 - **index**: Color index from pywal colors file (1-16)
   - 1 = Background color (darkest)
@@ -72,7 +72,7 @@ use this file to assign pywal colors to kde .colors fields.It's format is almost
 - **saturation**: Saturation percentage (0-100)
 
 for more details see the shell/color-config.txt
-### Target .colors File Format
+### 3.Targets .colors File Format
 it is merely the format kde color scheme used.
 KDE color scheme files use this format:
 
