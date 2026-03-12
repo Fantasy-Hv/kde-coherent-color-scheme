@@ -64,7 +64,7 @@ poll_interval_seconds=1800
 
 ### 2.color mapping config file 
 use this file to assign pywal colors to kde .colors fields.It's format is almost the same as that of .colors .you can use  color processing expression in syntax like "BackgroundNormal=$(index,value,saturation)",where
-- **index**: Color index from pywal colors file (1-16)
+- **index**: Color index from pywal colors file (1-16),which actually specifes the hue 
   - 1 = Background color (darkest)
   - 7 = Foreground color (brightest)
   - 2-6,8-16 = Other colors
