@@ -88,6 +88,24 @@ DecorationFocus=0,114,255
 ```
 you  just need to copy two .colors files from ~/.local/share/color-scheme (to the same directory)and modify the \[General] name filed and the file name, and then specify their paths in the project config file.
 
+## 📝 Configuration Examples
+
+
+### Example 1: Complete Theme
+
+See `shell/color-config.txt` for a complete example with all KDE color sections.
+
+### Example 2: Custom Polling Interval
+
+In `dycolor-config.ini`:
+```ini
+/home/user/themes/mytheme.colors
+[dycolor]
+poll_interval_seconds=900
+```
+
+This checks for wallpaper changes every 15 minutes.
+
 
 ## 💻 How It Works
 
@@ -135,23 +153,6 @@ you  just need to copy two .colors files from ~/.local/share/color-scheme (to th
 ```
 
 
-## 📝 Configuration Examples
-
-
-### Example 1: Complete Theme
-
-See `shell/color-config.txt` for a complete example with all KDE color sections.
-
-### Example 2: Custom Polling Interval
-
-In `dycolor-config.ini`:
-```ini
-/home/user/themes/mytheme.colors
-[dycolor]
-poll_interval_seconds=900
-```
-
-This checks for wallpaper changes every 15 minutes.
 
 ## 🐛 Troubleshooting
 
