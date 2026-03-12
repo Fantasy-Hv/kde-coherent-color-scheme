@@ -4,24 +4,20 @@ A script dynamically set kde color scheme  consistent with your wallpaper.
 
 
 ## 🌟 Features
-
-- **🎨 Dynamic Color Mapping** - Read 16 base colors from color files and apply transformations
-- **🔧 Flexible Configuration** - INI-style configuration files with custom expression syntax
-- **📝 Expression Syntax** - Use `$(index,value,saturation)` for dynamic color mapping
-- **🚀 Daemon Mode** - Background monitoring with automatic wallpaper change detection
-- **🔄 Pywal Integration** - Automatic color scheme generation from wallpapers
-- **💼 KDE Plasma Support** - Integration with KDE color themes
+- detect the wallpaper change by polling or q-dbus signal.
+- use pywal for color scheme generation
+- fully customizable configuation.
 
 
 
 ## 🛠️ Requirements
 
-### System Requirements
-- **OS**: Linux (tested on KDE Plasma)
+### Build Requirements
 - **Compiler**: C++20 compatible (GCC 11+, Clang 13+)
 - **Build System**: CMake >= 4.1
 
 ### Runtime Dependencies
+- **OS**: Linux (tested on KDE Plasma 6.6)
 - **pywal**: Color scheme generator (`sudo pacman -S pywal`)
 - **plasma-workspace**: KDE Plasma components (`sudo pacman -S plasma-workspace`)
 
