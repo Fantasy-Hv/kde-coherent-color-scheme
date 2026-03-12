@@ -32,19 +32,19 @@ Use the theme manager for automatic wallpaper-based theme switching:
 
 ```bash
 # Start the daemon (background monitoring)
-./shell/start-daemon.sh
+./start-daemon.sh
 
 # Or use the full theme manager
-./shell/dycolor-theme-manager.sh --start
+./dycolor-theme-manager.sh --start
 
 # Stop the daemon
-./shell/stop-daemon.sh
+./stop-daemon.sh
 
 # Run once immediately
-./shell/dycolor-theme-manager.sh --once
+./dycolor-theme-manager.sh --once
 
 # Check status
-./shell/dycolor-theme-manager.sh --status
+./dycolor-theme-manager.sh --status
 ```
 
 ## 📖 Configuration Guide
