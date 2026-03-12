@@ -157,17 +157,14 @@ This checks for wallpaper changes every 15 minutes.
 
 ### Common Issues
 
-**Issue**: "Cannot find color-config-injector"
-- **Solution**: Ensure the executable is built and in PATH or specify full path
-
 **Issue**: "pywal not found"
 - **Solution**: Install pywal: `sudo pacman -S pywal`
 
 **Issue**: Colors not updating in applications
-- **Solution**: Restart affected applications or send D-Bus config reload signal
+- make sure you set the correct color mapping to your expected field in color-config.txt
 
 **Issue**: Daemon not detecting wallpaper changes
-- **Solution**: Check if qdbus6 is installed and D-Bus is running
+- **Solution**: Check if qdbus6 is installed and D-Bus is running or try to set polling_interval to a smaller value.
 
 ### Log Files
 
@@ -183,9 +180,7 @@ tail -f ./shell/dycolor.log
 ## 🎯 Development
 
 ### Building from Source
-
 ```bash
-cd /home/yian/CLionProjects/dy-config-loader
 mkdir -p build && cd build
 cmake -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build .
