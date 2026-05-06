@@ -12,31 +12,46 @@
 #include "Logger.h"
 using namespace std;
 struct RGB {
-    int r, g, b;
+    int r, g, b;  // RGB颜色分量，取值范围0-255
 };
 class ColorReader {
-private:
-   string color_file;
-   int colors[COLOR_COUNT]{};
-   bool loaded = false;
+    string color_file;
 
-   struct HSL {
+    int colors[COLOR_COUNT]{};
+
+    bool loaded = false;
+
+private:
+    struct HSL {
         double h, s, l;
     };
 
-    // Clamp value between min and max (C++11 compatible)
+    /**
+     * @brief 限制数值在指定范围内（C++11兼容版本）
+     * @param val 要限制的数值
+     * @param min_val 最小值
+     * @param max_val 最大值
+     * @return 限制后的数值
+     */
    static double clamp(double val, double min_val, double max_val) {
         return std::max(min_val, std::min(max_val, val));
     }
 
 
-
-    // Convert RGB struct to hex
+    /**
+     * @brief 将RGB结构体转换为十六进制整数格式（0xRRGGBB）
+     * @param rgb RGB颜色结构体
+     * @return 十六进制整数表示的颜色值
+     */
    static int rgb_to_hex(RGB rgb) {
         return ((rgb.r & 0xFF) << 16) | ((rgb.g & 0xFF) << 8) | (rgb.b & 0xFF);
     }
 
-    // Convert RGB to HSL
+    /**
+     * @brief 将RGB颜色空间转换为HSL（色相、饱和度、亮度）
+     * @param rgb RGB颜色结构体，各分量取值范围0-255
+     * @return HSL结构体，h(色相): 0-1, s(饱和度): 0-1, l(亮度): 0-1
+     */
    static HSL rgb_to_hsl(RGB rgb) {
         HSL hsl;
         double r = rgb.r / 255.0;
@@ -68,7 +83,11 @@ private:
         return hsl;
     }
 
-    // Convert HSL to RGB
+    /**
+     * @brief 将HSL颜色空间转换为RGB
+     * @param hsl HSL颜色结构体，h(色相): 0-1, s(饱和度): 0-1, l(亮度): 0-1
+     * @return RGB结构体，各分量取值范围0-255
+     */
    static RGB hsl_to_rgb(HSL hsl) {
         RGB rgb;
         double h = hsl.h;
@@ -98,6 +117,10 @@ private:
 
         return rgb;
     }
+    /**
+     * @brief 从颜色文件中加载16个颜色值到内存数组
+     * @details 读取文件中的十六进制颜色值（支持带#前缀），每行一个颜色
+     */
     void load_colors() {
        ifstream file(color_file);
        if (!file.is_open())
@@ -107,11 +130,11 @@ private:
        int current_line = 0;
        Logger::stdout_line("reading colors");
        while (getline(file, line_content)) {
-           // Skip empty lines and comments
+           // 跳过空行和注释行
            if (line_content.empty() ) continue;
 
            try {
-               // Remove '#' prefix if present and convert hex to int
+               // 移除'#'前缀（如果存在）并将十六进制字符串转换为整数
                size_t start_pos = (line_content[0] == '#') ? 1 : 0;
                colors[current_line] = stoi(line_content.substr(start_pos), nullptr, 16);
            } catch (...) {
@@ -123,11 +146,19 @@ private:
        loaded = true;
    }
 public:
+    /**
+     * @brief 设置颜色源文件路径并加载颜色数据
+     * @param file_path 颜色文件的路径，文件包含16行十六进制颜色值
+     */
     void setColorSource(string &file_path) {
         color_file = file_path;
         load_colors();
     }
-    // Convert hex RGB to RGB struct
+    /**
+     * @brief 将十六进制颜色值转换为RGB结构体
+     * @param hex 十六进制颜色值（格式：0xRRGGBB）
+     * @return RGB结构体，包含r、g、b三个分量（0-255）
+     */
     static RGB hex_to_rgb(int hex) {
         return {
             (hex >> 16) & 0xFF,
@@ -135,61 +166,59 @@ public:
             hex & 0xFF
         };
     }
+    /**
+     * @brief 构造函数，初始化颜色文件路径
+     * @param file_path 颜色文件的路径
+     */
     ColorReader(const string& file_path) : color_file(file_path) {
 
     }
 
-    // Get color from colors file by line number
+    /**
+     * @brief 获取指定索引位置的颜色值（懒加载模式）
+     * @param line 颜色索引，范围0-15（对应16种颜色）
+     * @return 十六进制颜色值，如果索引越界则返回0（黑色）
+     */
    int get_color(int line) {
         // Logger::stdout_line("reading color line"+ to_string(line));
         if (!loaded)
             load_colors();
         if (line < 0 || line >= COLOR_COUNT) {
-            return 0; // Return black color if line number is out of range
+            return 0; // 如果行号超出范围，返回黑色
         }
         return colors[line];
     }
 
-    // Add value (brightness/lightness) to hex RGB color
-   static int add_value(int rgb_hex, int value) {
-        RGB rgb = hex_to_rgb(rgb_hex);
-        HSL hsl = rgb_to_hsl(rgb);
 
-        // Increase lightness (value parameter is in percentage, e.g., 10 = +10%)
-        hsl.l = clamp(hsl.l + value / 100.0, 0.0, 1.0);
-
-        RGB new_rgb = hsl_to_rgb(hsl);
-        return rgb_to_hex(new_rgb);
-    }
-
-    // Add saturation to hex RGB color
-   static int add_saturation(int rgb_hex, int value) {
-        RGB rgb = hex_to_rgb(rgb_hex);
-        HSL hsl = rgb_to_hsl(rgb);
-
-        // Increase saturation (value parameter is in percentage, e.g., 10 = +10%)
-        hsl.s = clamp(hsl.s + value / 100.0, 0.0, 1.0);
-
-        RGB new_rgb = hsl_to_rgb(hsl);
-        return rgb_to_hex(new_rgb);
-    }
+    /**
+     * @brief 设置颜色的亮度值（基于HSL色彩空间）
+     * @param rgb_hex 原始颜色的十六进制值（0xRRGGBB）
+     * @param value 亮度百分比（例如：50表示50%亮度）
+     * @return 调整后的十六进制颜色值
+     */
     static int set_value(int rgb_hex, int value) {
         // Logger::stdout_line("setting color value");
         RGB rgb = hex_to_rgb(rgb_hex);
         HSL hsl = rgb_to_hsl(rgb);
 
-        // Set lightness (value parameter is in percentage, e.g., 50 = 50%)
+        // 设置亮度（value参数为百分比，例如：50 = 50%）
         hsl.l = clamp(value / 100.0, 0.0, 1.0);
 
         RGB new_rgb = hsl_to_rgb(hsl);
         return rgb_to_hex(new_rgb);
     }
+    /**
+     * @brief 设置颜色的饱和度（基于HSL色彩空间）
+     * @param rgb_hex 原始颜色的十六进制值（0xRRGGBB）
+     * @param value 饱和度百分比（例如：50表示50%饱和度）
+     * @return 调整后的十六进制颜色值
+     */
     static int set_saturation(int rgb_hex, int value) {
         // Logger::stdout_line("setting color saturation");
         RGB rgb = hex_to_rgb(rgb_hex);
         HSL hsl = rgb_to_hsl(rgb);
 
-        // Set saturation (value parameter is in percentage, e.g., 50 = 50%)
+        // 设置饱和度（value参数为百分比，例如：50 = 50%）
         hsl.s = clamp(value / 100.0, 0.0, 1.0);
 
         RGB new_rgb = hsl_to_rgb(hsl);
