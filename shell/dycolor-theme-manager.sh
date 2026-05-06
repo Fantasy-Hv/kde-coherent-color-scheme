@@ -173,11 +173,10 @@ update_colors_file() {
    PROGRAM_NAME="color-config-injector"
    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
    UPDATE_PROGRAM="$SCRIPT_DIR/$PROGRAM_NAME"
-   COLOR_CONFIG_FILE="$SCRIPT_DIR/color-config.txt"
    if [ $KDE_COLOR_TAG -eq "1" ]; then
-       "$UPDATE_PROGRAM" "$COLOR_CONFIG_FILE" "$KDE_COLOR_FILE1"
+       "$UPDATE_PROGRAM" "$CONFIG_FILE"
        else
-         "$UPDATE_PROGRAM" "$COLOR_CONFIG_FILE" "$KDE_COLOR_FILE2"
+         "$UPDATE_PROGRAM" "$CONFIG_FILE"
    fi
    return 0
 }
